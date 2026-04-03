@@ -1,7 +1,13 @@
 import Sidebar from "@/components/layout/sidebar";
+import { Topbar } from "@/components/layout/topbar";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+  const { userId } = await auth();
+
+  if (!userId) redirect("/sign-in");
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
       <Sidebar />
