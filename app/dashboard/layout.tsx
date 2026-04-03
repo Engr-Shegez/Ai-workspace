@@ -9,7 +9,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!userId) redirect("/sign-in");
   return (
-    <div className="flex h-screen bg-zinc-950 text-zinc-100">
+    <div className="flex h-screen dark:bg-zinc-950 dark:text-zinc-100 bg-white text-zinc-900">
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <Topbar />
