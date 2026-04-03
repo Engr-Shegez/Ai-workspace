@@ -5,19 +5,51 @@ import { useChatStore } from "@/lib/store/chat-store";
 
 export function ChatInput() {
   const [input, setInput] = useState("");
-  const { addMessage } = useChatStore();
+  const { messages, addMessage, updateLastMessage } = useChatStore();
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    addMessage({ role: "user", content: input });
+    const userMessage = { role: "user", content: input };
+
+    // Add user message
+    addMessage(userMessage);
+
+    // Add empty assistant message (placeholder)
+    addMessage({ role: "assistant", content: "" });
 
     setInput("");
+
+    // Call API
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({
+        messages: [...messages, userMessage],
+      }),
+    });
+
+    if (!res.body) return;
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+
+    let aiText = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+      aiText += chunk;
+
+      // Update last message live
+      updateLastMessage(aiText);
+    }
   };
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="flex items-center gap-2 rounded-xl border  p-3">
+      <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 p-3">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
