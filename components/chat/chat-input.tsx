@@ -17,7 +17,7 @@ export function ChatInput() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 p-3">
+      <div className="flex items-center gap-2 rounded-xl border  p-3">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}

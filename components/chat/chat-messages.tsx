@@ -10,12 +10,10 @@ export function ChatMessages() {
       {messages.map((msg, i) => (
         <div key={i} className="space-y-2">
           {/* Label */}
-          <div className="text-xs text-zinc-500">
-            {msg.role === "user" ? "You" : "AI"}
-          </div>
+          <div className="text-sm ">{msg.role === "user" ? "You" : "AI"}</div>
 
           {/* Content block */}
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-sm leading-relaxed">
+          <div className="rounded-xl border border-zinc-800 p-4 text-xl leading-relaxed">
             {msg.content}
           </div>
         </div>

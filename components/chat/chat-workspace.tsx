@@ -11,7 +11,7 @@ const ChatWorkspace = () => {
       </div>
 
       {/* input */}
-      <div className="border-t border-zinc-800 p-4">
+      <div className="border-t b p-4">
         <ChatInput />
       </div>
     </div>
