@@ -20,12 +20,12 @@ export function Topbar() {
           <Menu size={18} />
         </button>
 
-        <h2 className="text-sm font-medium text-zinc-400">Workspace</h2>
+        <h2 className="text-lg font-medium text-zinc-400">Workspace</h2>
       </div>
 
       {/* CENTER (search later) */}
       <div className="hidden md:flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-400">
-        <Search size={14} />
+        <Search size={20} />
         <span>Search...</span>
       </div>
 
