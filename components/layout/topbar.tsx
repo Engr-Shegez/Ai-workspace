@@ -3,13 +3,15 @@
 import { Menu, Search, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { UserButton } from "@clerk/nextjs";
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
+
+function subscribe() {
+  return () => {};
+}
 
 export function Topbar() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(subscribe, () => true, () => false);
 
   return (
     <header className="flex h-14 items-center justify-between border-b dark:border-zinc-800 dark:bg-zinc-950 bg-white border-zinc-200 px-4">
