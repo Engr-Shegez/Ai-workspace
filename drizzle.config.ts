@@ -1,10 +1,10 @@
-import { Config } from "tailwind-merge";
+import { defineConfig } from "drizzle-kit";
 
-export default {
-  schema: "./lib/db/schema.ts",
+export default defineConfig({
+  schema: "./lib/db/schema.ts", // adjust if needed
   out: "./drizzle",
-  driver: "pg",
+  dialect: "postgresql", // ✅ REQUIRED
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL!,
+    url: process.env.DATABASE_URL!, // your Supabase URL
   },
-} satisfies Config;
+});
