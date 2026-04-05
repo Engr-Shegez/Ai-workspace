@@ -35,20 +35,23 @@ export function ProductPreviewSection() {
                 Workspace
               </p>
               <div className="mt-5 space-y-2">
-                {["All threads", "Roadmap review", "Support ops", "Team briefs"].map(
-                  (item, index) => (
-                    <div
-                      key={item}
-                      className={`rounded-2xl px-4 py-3 text-sm ${
-                        index === 1
-                          ? "border border-emerald-200/20 bg-emerald-200/10 text-white"
-                          : "border border-white/8 bg-white/5 text-zinc-400"
-                      }`}
-                    >
-                      {item}
-                    </div>
-                  )
-                )}
+                {[
+                  "All threads",
+                  "Roadmap review",
+                  "Support ops",
+                  "Team briefs",
+                ].map((item, index) => (
+                  <div
+                    key={item}
+                    className={`rounded-2xl px-4 py-3 text-sm ${
+                      index === 1
+                        ? "border border-emerald-200/20 bg-emerald-200/10 text-white"
+                        : "border border-white/8 bg-white/5 text-zinc-400"
+                    }`}
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
 
               <div className="mt-8 rounded-[1.5rem] border border-white/8 bg-white/5 p-4">
@@ -84,17 +87,19 @@ export function ProductPreviewSection() {
 
                 <div className="mt-6 grid gap-4">
                   <div className="rounded-[1.25rem] border border-white/8 bg-white/[0.04] p-5">
-                    <p className="text-sm font-medium text-white">Brief summary</p>
+                    <p className="text-sm font-medium text-white">
+                      Brief summary
+                    </p>
                     <p className="mt-3 text-sm leading-7 text-zinc-400">
-                      Position the product as the calm layer between raw input and
-                      team execution. Emphasize clarity, speed, and decision
+                      Position the product as the calm layer between raw input
+                      and team execution. Emphasize clarity, speed, and decision
                       quality rather than novelty.
                     </p>
                   </div>
 
                   <div className="grid gap-4 lg:grid-cols-2">
-                    <div className="rounded-[1.25rem] border border-white/8 bg-white/[0.04] p-5">
-                      <p className="text-sm font-medium text-white">
+                    <div className="rounded-[1.25rem] border border-white/8 bg-white/4 p-5">
+                      <p className="text-md font-medium text-white">
                         Decisions captured
                       </p>
                       <ul className="mt-3 space-y-3 text-sm text-zinc-400">

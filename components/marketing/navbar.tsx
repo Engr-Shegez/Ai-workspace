@@ -16,7 +16,11 @@ function subscribe() {
 export function MarketingNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-  const mounted = useSyncExternalStore(subscribe, () => true, () => false);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
 
   return (
     <header className="sticky top-0 z-50">
@@ -25,7 +29,7 @@ export function MarketingNavbar() {
           <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
-              className="text-base font-semibold tracking-[-0.04em] text-zinc-950 dark:text-white"
+              className="text-xl font-semibold tracking-[-0.04em] text-zinc-950 dark:text-white"
             >
               Threadline
             </Link>
@@ -35,7 +39,7 @@ export function MarketingNavbar() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="text-sm text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                  className="text-md text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -73,7 +77,9 @@ export function MarketingNavbar() {
 
             <button
               type="button"
-              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-label={
+                isOpen ? "Close navigation menu" : "Open navigation menu"
+              }
               className="inline-flex size-10 items-center justify-center rounded-full border border-black/8 bg-zinc-50 text-zinc-900 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 md:hidden"
               onClick={() => setIsOpen((open) => !open)}
             >
@@ -106,7 +112,9 @@ export function MarketingNavbar() {
                   {mounted ? (
                     <button
                       type="button"
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                      onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                      }
                       className="inline-flex h-11 items-center justify-center rounded-2xl border border-black/8 bg-zinc-50 text-zinc-900 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
                     >
                       {theme === "dark" ? "Light mode" : "Dark mode"}

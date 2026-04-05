@@ -32,28 +32,51 @@ export function ChatInput() {
       fileInputRef.current.value = "";
     }
 
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      body: JSON.stringify({
-        messages: [...messages, userMessage],
-      }),
-    });
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [...messages, userMessage],
+        }),
+      });
 
-    if (!res.body) return;
+      if (!res.ok) {
+        const errorBody = (await res.json().catch(() => null)) as
+          | { error?: string }
+          | null;
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
+        updateLastMessage(
+          errorBody?.error ?? "The chat request failed. Please try again.",
+        );
+        return;
+      }
 
-    let aiText = "";
+      if (!res.body) {
+        updateLastMessage("The chat response did not include a stream.");
+        return;
+      }
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
 
-      const chunk = decoder.decode(value);
-      aiText += chunk;
+      let aiText = "";
 
-      updateLastMessage(aiText);
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        aiText += chunk;
+
+        updateLastMessage(aiText);
+      }
+    } catch {
+      updateLastMessage(
+        "The chat service is unreachable right now. Please try again.",
+      );
     }
   };
 

@@ -17,10 +17,10 @@ export function SectionHeading({
     <div
       className={cn(
         "max-w-2xl space-y-4",
-        align === "center" && "mx-auto text-center"
+        align === "center" && "mx-auto text-center",
       )}
     >
-      <p className="text-xs font-medium uppercase tracking-[0.28em] text-emerald-700 dark:text-emerald-200/80">
+      <p className="text-lg font-medium uppercase tracking-[0.28em] text-emerald-700 dark:text-emerald-200/80">
         {eyebrow}
       </p>
       <div className="space-y-3">

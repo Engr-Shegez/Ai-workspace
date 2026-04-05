@@ -25,7 +25,7 @@ export function PricingSection() {
               delay={index * 0.05}
               className={`rounded-[2rem] border p-6 ${
                 tier.highlight
-                  ? "border-emerald-600/20 bg-emerald-500/[0.08] shadow-[0_24px_60px_rgba(16,185,129,0.08)] dark:border-emerald-200/25 dark:bg-emerald-200/8"
+                  ? "border-emerald-600/20 bg-emerald-500/8 shadow-[0_24px_60px_rgba(16,185,129,0.08)] dark:border-emerald-200/25 dark:bg-emerald-200/8"
                   : "border-black/6 bg-white/70 shadow-[0_18px_40px_rgba(0,0,0,0.05)] dark:border-white/8 dark:bg-white/[0.035] dark:shadow-none"
               }`}
             >
