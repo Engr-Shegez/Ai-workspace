@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       {
         error: "GROQ_API_KEY is not configured on the server.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -30,7 +30,6 @@ export async function POST(req: Request) {
 
   await db.insert(messages).values({
     chatId: defaultChatId,
-    // chatId: "11111111-1111-1111-1111-111111111111",
     role: "user",
     content: lastUserMessage.content,
   });
@@ -62,7 +61,7 @@ export async function POST(req: Request) {
           groqModel +
           "` model configuration.",
       },
-      { status: 502 }
+      { status: 502 },
     );
   }
 }
