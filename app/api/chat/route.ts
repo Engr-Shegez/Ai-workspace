@@ -1,11 +1,12 @@
 import { groq } from "@ai-sdk/groq";
-import { streamText } from "ai";
+import { smoothStream, streamText } from "ai";
 import { after } from "next/server";
 import { db } from "@/lib/db";
 import { messages } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs/server";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -88,6 +89,10 @@ export async function POST(req: Request) {
     const result = await streamText({
       model: groq(groqModel),
       messages: incomingMessages,
+      experimental_transform: smoothStream({
+        chunking: "word",
+        delayInMs: 18,
+      }),
       onFinish: async (completion) => {
         after(async () => {
           await persistMessage({
@@ -99,7 +104,16 @@ export async function POST(req: Request) {
       },
     });
 
-    return result.toTextStreamResponse();
+    return result.toTextStreamResponse({
+      headers: {
+        "Cache-Control": "no-cache, no-transform",
+        Connection: "keep-alive",
+        "Content-Encoding": "none",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "X-Accel-Buffering": "no",
+      },
+    });
   } catch (error) {
     console.error("Groq chat request failed:", error);
 

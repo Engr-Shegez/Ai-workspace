@@ -8,15 +8,18 @@ type Message = {
 type ChatStore = {
   messages: Message[];
   draft: string;
+  isStreaming: boolean;
   addMessage: (msg: Message) => void;
   updateLastMessage: (content: string) => void;
   setMessages: (msgs: Message[]) => void;
   setDraft: (draft: string) => void;
+  setIsStreaming: (isStreaming: boolean) => void;
 };
 
 export const useChatStore = create<ChatStore>((set) => ({
   messages: [],
   draft: "",
+  isStreaming: false,
 
   addMessage: (msg) =>
     set((state) => ({
@@ -29,14 +32,20 @@ export const useChatStore = create<ChatStore>((set) => ({
         return state;
       }
 
-      const updated = [...state.messages];
-      updated[updated.length - 1].content = content;
-      return { messages: updated };
+      return {
+        messages: state.messages.map((message, index) =>
+          index === state.messages.length - 1
+            ? { ...message, content }
+            : message,
+        ),
+      };
     }),
 
   setMessages: (msgs) => set({ messages: msgs }),
 
   setDraft: (draft) => set({ draft }),
+
+  setIsStreaming: (isStreaming) => set({ isStreaming }),
 }));
 
 export type { Message };

@@ -4,10 +4,7 @@ import { useDashboardUiStore } from "@/lib/store/dashboard-ui-store";
 
 import { ChatMessages } from "./chat-messages";
 import { ChatInput } from "./chat-input";
-import {
-  DashboardExploreView,
-  DashboardNotesView,
-} from "./dashboard-alt-view";
+import { DashboardExploreView, DashboardNotesView } from "./dashboard-alt-view";
 
 export function DashboardChatPanel() {
   const { activeThreadTitle, activeView } = useDashboardUiStore();
@@ -38,13 +35,16 @@ export function DashboardChatPanel() {
 
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              ["Mode", activeView === "chat" ? "Focused workspace" : "Reference view"],
+              [
+                "Mode",
+                activeView === "chat" ? "Focused workspace" : "Reference view",
+              ],
               ["Latency", "Live response stream"],
               ["State", "Synced in session"],
             ].map(([label, value]) => (
               <div
                 key={label}
-                className="rounded-[1.25rem] border border-black/6 bg-zinc-50/80 px-4 py-3 dark:border-white/8 dark:bg-white/[0.04]"
+                className="rounded-[1.25rem] border border-black/6 bg-zinc-50/80 px-4 py-3 dark:border-white/8 dark:bg-white/4"
               >
                 <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
                   {label}

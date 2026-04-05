@@ -10,20 +10,28 @@ export function ChatInput() {
   const [input, setInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { attachmentName, setAttachmentName } = useDashboardUiStore();
-  const { messages, draft, addMessage, updateLastMessage, setDraft } =
-    useChatStore();
+  const {
+    messages,
+    draft,
+    isStreaming,
+    addMessage,
+    updateLastMessage,
+    setDraft,
+    setIsStreaming,
+  } = useChatStore();
 
   useEffect(() => {
     setInput(draft);
   }, [draft]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isStreaming) return;
 
     const userMessage: Message = { role: "user", content: input };
 
     addMessage(userMessage);
     addMessage({ role: "assistant", content: "" });
+    setIsStreaming(true);
 
     setInput("");
     setDraft("");
@@ -68,15 +76,22 @@ export function ChatInput() {
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value);
+        const chunk = decoder.decode(value, { stream: true });
         aiText += chunk;
 
         updateLastMessage(aiText);
+      }
+
+      const finalChunk = decoder.decode();
+      if (finalChunk) {
+        updateLastMessage(aiText + finalChunk);
       }
     } catch {
       updateLastMessage(
         "The chat service is unreachable right now. Please try again.",
       );
+    } finally {
+      setIsStreaming(false);
     }
   };
 
@@ -126,9 +141,10 @@ export function ChatInput() {
               <button
                 type="button"
                 onClick={handleSend}
-                className="inline-flex items-center gap-2 rounded-2xl bg-zinc-950 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+                disabled={isStreaming || !input.trim()}
+                className="inline-flex items-center gap-2 rounded-2xl bg-zinc-950 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
               >
-                Send
+                {isStreaming ? "Typing..." : "Send"}
                 <ArrowUp size={15} />
               </button>
             </div>

@@ -5,7 +5,7 @@ import { Bot, Sparkles } from "lucide-react";
 import { useChatStore } from "@/lib/store/chat-store";
 
 export function ChatMessages() {
-  const { messages } = useChatStore();
+  const { messages, isStreaming } = useChatStore();
 
   if (messages.length === 0) {
     return (
@@ -26,45 +26,60 @@ export function ChatMessages() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
-      {messages.map((msg, i) => (
-        <div
-          key={i}
-          className={`flex gap-4 ${
-            msg.role === "user" ? "justify-end" : "justify-start"
-          }`}
-        >
-          {msg.role === "assistant" ? (
-            <div className="mt-1 hidden size-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 text-white dark:flex dark:bg-white dark:text-zinc-950">
-              <Bot className="size-4" />
-            </div>
-          ) : null}
+      {messages.map((msg, i) => {
+        const isLatestAssistantMessage =
+          msg.role === "assistant" && i === messages.length - 1;
 
+        return (
           <div
-            className={`max-w-[46rem] space-y-2 ${
-              msg.role === "user" ? "items-end text-right" : ""
+            key={i}
+            className={`flex gap-4 ${
+              msg.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
-            <div className="text-xs font-medium uppercase tracking-[0.22em] text-zinc-500">
-              {msg.role === "user" ? "You" : "Aven"}
-            </div>
+            {msg.role === "assistant" ? (
+              <div className="mt-1 hidden size-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 text-white dark:flex dark:bg-white dark:text-zinc-950">
+                <Bot className="size-4" />
+              </div>
+            ) : null}
 
             <div
-              className={`rounded-[1.5rem] px-5 py-4 text-[15px] leading-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] ${
-                msg.role === "user"
-                  ? "border border-zinc-950 bg-zinc-950 text-white dark:border-white dark:bg-white dark:text-zinc-950"
-                  : "border border-black/6 bg-zinc-50/90 text-zinc-800 dark:border-white/8 dark:bg-white/[0.04] dark:text-zinc-200"
+              className={`max-w-184 space-y-2 ${
+                msg.role === "user" ? "items-end text-right" : ""
               }`}
             >
-              {msg.content || (
-                <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <span className="size-2 rounded-full bg-current opacity-60" />
-                  Thinking
-                </span>
-              )}
+              <div className="text-xs font-medium uppercase tracking-[0.22em] text-zinc-500">
+                {msg.role === "user" ? "You" : "Aven"}
+              </div>
+
+              <div
+                className={`rounded-[1.5rem] px-5 py-4 text-[15px] leading-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] ${
+                  msg.role === "user"
+                    ? "border border-zinc-950 bg-zinc-950 text-white dark:border-white dark:bg-white dark:text-zinc-950"
+                    : "border border-black/6 bg-zinc-50/90 text-zinc-800 dark:border-white/8 dark:bg-white/4 dark:text-zinc-200"
+                }`}
+              >
+                {msg.content ? (
+                  <>
+                    {msg.content}
+                    {isStreaming && isLatestAssistantMessage ? (
+                      <span
+                        aria-hidden="true"
+                        className="ml-1 inline-block h-5 w-0.5 animate-pulse rounded-full bg-current align-middle opacity-70"
+                      />
+                    ) : null}
+                  </>
+                ) : (
+                  <span className="inline-flex items-center gap-2 text-zinc-400">
+                    <span className="size-2 rounded-full bg-current opacity-60" />
+                    Thinking
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
