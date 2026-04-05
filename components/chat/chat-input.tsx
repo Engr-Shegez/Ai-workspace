@@ -52,9 +52,9 @@ export function ChatInput() {
       });
 
       if (!res.ok) {
-        const errorBody = (await res.json().catch(() => null)) as
-          | { error?: string }
-          | null;
+        const errorBody = (await res.json().catch(() => null)) as {
+          error?: string;
+        } | null;
 
         updateLastMessage(
           errorBody?.error ?? "The chat request failed. Please try again.",
@@ -105,7 +105,7 @@ export function ChatInput() {
           setAttachmentName(event.target.files?.[0]?.name ?? null)
         }
       />
-      <div className="rounded-[1.5rem] border border-black/6 bg-zinc-50/90 p-3 shadow-[0_14px_34px_rgba(0,0,0,0.04)] dark:border-white/8 dark:bg-white/[0.04]">
+      <div className="rounded-[1.5rem] border border-black/6 bg-zinc-50/90 p-3 shadow-[0_14px_34px_rgba(0,0,0,0.04)] dark:border-white/8 dark:bg-white/4">
         <div className="flex items-start gap-3">
           <button
             type="button"
@@ -115,7 +115,7 @@ export function ChatInput() {
                 fileInputRef.current.click();
               }
             }}
-            className="mt-1 inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-black/6 bg-white text-zinc-500 transition hover:bg-zinc-100 dark:border-white/8 dark:bg-white/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.06]"
+            className="mt-1 inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-black/6 bg-white text-zinc-500 transition hover:bg-zinc-100 dark:border-white/8 dark:bg-white/4 dark:text-zinc-300 dark:hover:bg-white/6"
           >
             <Paperclip size={16} />
           </button>
@@ -128,7 +128,7 @@ export function ChatInput() {
                 setDraft(e.target.value);
               }}
               placeholder="Ask anything, sketch an idea, or paste in context..."
-              className="min-h-[72px] w-full resize-none bg-transparent px-1 py-2 text-sm leading-7 text-zinc-800 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="max-h-18 w-full resize-none bg-transparent px-1 py-2 text-lg leading-7 text-zinc-800 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               rows={3}
             />
 

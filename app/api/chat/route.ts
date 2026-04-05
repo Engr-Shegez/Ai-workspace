@@ -91,7 +91,7 @@ export async function POST(req: Request) {
       messages: incomingMessages,
       experimental_transform: smoothStream({
         chunking: "word",
-        delayInMs: 18,
+        delayInMs: 70,
       }),
       onFinish: async (completion) => {
         after(async () => {
