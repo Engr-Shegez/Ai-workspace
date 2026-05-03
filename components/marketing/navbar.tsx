@@ -1,5 +1,6 @@
 "use client";
 
+import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,11 +17,17 @@ function subscribe() {
 export function MarketingNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { isLoaded, isSignedIn, user } = useUser();
   const mounted = useSyncExternalStore(
     subscribe,
     () => true,
     () => false,
   );
+  const accountLabel =
+    user?.primaryEmailAddress?.emailAddress ??
+    user?.emailAddresses[0]?.emailAddress ??
+    user?.fullName ??
+    "Account";
 
   return (
     <header className="sticky top-0 z-50">
@@ -60,19 +67,34 @@ export function MarketingNavbar() {
                   )}
                 </button>
               ) : null}
-              <Button
-                asChild
-                variant="ghost"
-                className="border border-black/8 bg-zinc-50 px-4 text-zinc-900 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
-              >
-                <Link href="/sign-in">Sign in</Link>
-              </Button>
-              <Button
-                asChild
-                className="bg-zinc-950 px-4 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
-              >
-                <Link href="/sign-up">Get Started</Link>
-              </Button>
+              {isLoaded && isSignedIn ? (
+                <div className="flex min-w-0 items-center gap-2 rounded-full border border-black/8 bg-zinc-50 py-1 pl-3 pr-1 text-zinc-900 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100">
+                  <Link
+                    href="/dashboard"
+                    className="max-w-[13rem] truncate text-sm font-medium"
+                    title={accountLabel}
+                  >
+                    {accountLabel}
+                  </Link>
+                  <UserButton />
+                </div>
+              ) : (
+                <>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="border border-black/8 bg-zinc-50 px-4 text-zinc-900 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
+                  >
+                    <Link href="/sign-in">Sign in</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className="bg-zinc-950 px-4 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+                  >
+                    <Link href="/sign-up">Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             <button
@@ -120,23 +142,45 @@ export function MarketingNavbar() {
                       {theme === "dark" ? "Light mode" : "Dark mode"}
                     </button>
                   ) : null}
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="justify-center border border-black/8 bg-zinc-50 text-zinc-900 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
-                  >
-                    <Link href="/sign-in" onClick={() => setIsOpen(false)}>
-                      Sign in
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    className="justify-center bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
-                  >
-                    <Link href="/sign-up" onClick={() => setIsOpen(false)}>
-                      Get Started
-                    </Link>
-                  </Button>
+                  {isLoaded && isSignedIn ? (
+                    <div className="flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-black/8 bg-zinc-50 px-4 py-3 text-zinc-900 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100">
+                      <Link
+                        href="/dashboard"
+                        className="min-w-0 flex-1 truncate text-sm font-medium"
+                        title={accountLabel}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {accountLabel}
+                      </Link>
+                      <UserButton />
+                    </div>
+                  ) : (
+                    <>
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="justify-center border border-black/8 bg-zinc-50 text-zinc-900 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
+                      >
+                        <Link
+                          href="/sign-in"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          Sign in
+                        </Link>
+                      </Button>
+                      <Button
+                        asChild
+                        className="justify-center bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+                      >
+                        <Link
+                          href="/sign-up"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          Get Started
+                        </Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </motion.div>
             ) : null}
